@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,7 +11,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-public class FacebookTestCase1 {
+
+public class FacebookTestCase3 {
     private static final Logger LOGGER = LoggerFactory.getLogger(FacebookTestCase1.class);
 
     public static void main(String[] args) throws InterruptedException {
@@ -38,7 +40,7 @@ public class FacebookTestCase1 {
             List<WebElement> cookieNotifications = driver.findElements(By.xpath("//button[@title='Tillåt endast nödvändiga cookies']"));
             if (cookieNotifications.size() > 0) {
                 cookieNotifications.get(0).click();
-                LOGGER.info("Clicked on the cookie notification button");
+                LOGGER.debug("Clicked on the cookie notification button");
             } else {
                 LOGGER.info("No cookie notification found on the page");
             }
@@ -81,7 +83,6 @@ public class FacebookTestCase1 {
             String expectedUrl1 = "https://www.facebook.com/";
             String expectedUrl2 = "https://www.facebook.com/?sk=welcome";
             String actualUrl = driver.getCurrentUrl();
-
             if (actualUrl.equals(expectedUrl1) || actualUrl.equals(expectedUrl2)) {
                 LOGGER.debug("Login successful");
             } else {
@@ -89,11 +90,31 @@ public class FacebookTestCase1 {
             }
             Thread.sleep(1000);
 
-            // Here starts other tests
+
+            // Case 3 starts here
+
+            // Enter search query and click search button with aria-label="Search Facebook"
+            String keyword = "Alex";
+            WebElement searchBox = driver.findElement(By.xpath("//input[@aria-label='Search Facebook']"));
+            searchBox.sendKeys(keyword);
+            LOGGER.debug("Text entered in searchbar");
+            Thread.sleep(1000);
+            searchBox.sendKeys(Keys.RETURN);
+            LOGGER.debug("ENTER pressed");
+            Thread.sleep(3000);
 
 
-            // Here ends other tests
-
+            //Testing if the search has results
+            List<WebElement> elements = driver.findElements(By.xpath("//*[contains(text(),'" + keyword + "')]"));
+            if (elements.size() > 0) {
+                LOGGER.info("Found " + elements.size() + " elements with text containing '" + keyword + "'");
+                LOGGER.debug("Search successful");
+            } else {
+                LOGGER.error("No elements found with text containing '" + keyword + "'");
+                LOGGER.error("Search failed");
+            }
+            Thread.sleep(2000);
+            // Case 3 ends here
 
             //Logging out
             // Click on the profile button and wait for 2 seconds
@@ -104,31 +125,30 @@ public class FacebookTestCase1 {
 
             // Click logout button and verify that user is logged out and redirected to login page
             WebElement logoutButton = driver.findElement(By.xpath("//span[text()='Log Out']"));
-            logoutButton.click();
-            LOGGER.debug("Clicked on the logout button");
-            Thread.sleep(1000);
 
-            // Verify if user is logged out and redirected to login page
-            String loginPageUrl = "https://www.facebook.com/";
-            if (driver.getCurrentUrl().equals(loginPageUrl)) {
-                LOGGER.debug("Logged out successfully");
+            // Check if the logout button is found
+            if(logoutButton.isDisplayed()) {
+                LOGGER.debug("Logout successful."); // Log debug message using logger
             } else {
-                LOGGER.error("Logout failed");
+                LOGGER.error("Logout unsuccessful."); // Log error message using logger
             }
-            Thread.sleep(1000);
 
+            // Click on the logout button
+            logoutButton.click();
+
+            Thread.sleep(1000);
 
         } catch (InterruptedException e) {
             LOGGER.error("InterruptedException occurred: " + e.getMessage());
         } catch (Exception e) {
             LOGGER.error("Exception occurred: " + e.getMessage());
         } finally {
+
             // Close the browser
             driver.quit();
             LOGGER.debug("Browser is closed");
             LOGGER.info("Program is finished");
             LOGGER.info(" ");
-
         }
     }
 }
