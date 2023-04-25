@@ -1,0 +1,8 @@
+2023-04-20 15:32:45.845 [main] DEBUG Logback - Debug message
+2023-04-20 15:32:45.850 [main] INFO  Logback - Info message
+2023-04-20 15:32:45.851 [main] WARN  Logback - Warning message
+2023-04-20 15:32:45.851 [main] ERROR Logback - Error message
+2023-04-20 15:34:22.001 [main] DEBUG Logback - Debug message
+2023-04-20 15:34:22.006 [main] INFO  Logback - Info message
+2023-04-20 15:34:22.006 [main] WARN  Logback - Warning message
+2023-04-20 15:34:22.006 [main] ERROR Logback - Error message
