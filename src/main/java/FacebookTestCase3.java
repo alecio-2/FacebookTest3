@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class FacebookTestCase3 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FacebookTestCase1.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FacebookTestCase3.class);
 
     public static void main(String[] args) throws InterruptedException {
         LOGGER.info("Starting program");
